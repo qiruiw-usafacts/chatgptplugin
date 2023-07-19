@@ -220,7 +220,7 @@ class AzureSearchDataStore(DataStore):
                     SearchableField(name=FIELDS_TEXT, type=SearchFieldDataType.String, analyzer_name="standard.lucene"),
                     SearchField(name=FIELDS_EMBEDDING, type=SearchFieldDataType.Collection(SearchFieldDataType.Single), 
                                 hidden=False, searchable=True, filterable=False, sortable=False, facetable=False,
-                                dimensions=AZURESEARCH_DIMENSIONS, vector_search_configuration="default"),
+                                dimensions=1536, vector_search_configuration="default"),
                     SimpleField(name=FIELDS_DOCUMENT_ID, type=SearchFieldDataType.String, filterable=True, sortable=True),
                     SimpleField(name=FIELDS_SOURCE, type=SearchFieldDataType.String, filterable=True, sortable=True),
                     SimpleField(name=FIELDS_SOURCE_ID, type=SearchFieldDataType.String, filterable=True, sortable=True),
@@ -258,3 +258,6 @@ class AzureSearchDataStore(DataStore):
             logger.info("Using an API key to authenticate with Azure Search")
             credential = AzureKeyCredential(AZURESEARCH_API_KEY)
         return credential
+
+
+# export AzureSearchDataStore()

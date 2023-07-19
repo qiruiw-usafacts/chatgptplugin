@@ -73,7 +73,7 @@ async def upsert_file(
 
 
 @app.post(
-    "/ec",
+    "/upsert",
     response_model=UpsertResponse,
 )
 async def upsert(

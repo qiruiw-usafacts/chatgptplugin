@@ -12,7 +12,7 @@ from models.models import (
 )
 from services.chunks import get_document_chunks
 from services.openai import get_embeddings
-
+# from providers.azuresearch_datastore import AzureSearchDataStore
 
 class DataStore(ABC):
     async def upsert(
@@ -47,10 +47,15 @@ class DataStore(ABC):
         Takes in a list of document chunks and inserts them into the database.
         Return a list of document ids.
         """
-        #connect to postgres server
+        # Connect to postgres server
 
-        return ["1"]
-        # raise NotImplementedError
+        # Initilize a AzureSearchDataStore
+        # Upsert data its upload function
+
+
+
+        raise NotImplementedError
+
 
     async def query(self, queries: List[Query]) -> List[QueryResult]:
         """
@@ -71,6 +76,7 @@ class DataStore(ABC):
         """
         Takes in a list of queries with embeddings and filters and returns a list of query results with matching document chunks and scores.
         """
+
         raise NotImplementedError
 
     @abstractmethod
