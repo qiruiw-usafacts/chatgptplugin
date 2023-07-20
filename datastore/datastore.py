@@ -54,9 +54,6 @@ class DataStore(ABC):
 
 
 
-        raise NotImplementedError
-
-
     async def query(self, queries: List[Query]) -> List[QueryResult]:
         """
         Takes in a list of queries and filters and returns a list of query results with matching document chunks and scores.

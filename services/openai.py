@@ -28,7 +28,17 @@ def get_embeddings(texts: List[str]) -> List[List[float]]:
     if deployment == None:
         response = openai.Embedding.create(input=texts, model="text-embedding-ada-002")
     else:
+        print("hello before embedding")
+        open_ai_endpoint = "https://usafacts-chatgpt-poc.openai.azure.com/"  # https://usafacts-chatgpt-poc.openai.azure.com/
+        open_ai_key = "a402a35b28ff44b4825d76e558304583"  # a402a35b28ff44b4825d76e558304583
+
+        openai.api_version = "2022-12-01"  # "2022-12-01"
+        openai.api_base = open_ai_endpoint
+        openai.api_type = "azure"
+        openai.api_key = open_ai_key
+        model_id = "test-model"
         response = openai.Embedding.create(input=texts, deployment_id=deployment)
+        print(response)
 
     # Extract the embedding data from the response
     data = response["data"]  # type: ignore

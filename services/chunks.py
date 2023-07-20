@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional, Tuple
 import uuid
 import os
+
+from loguru import logger
+
 from models.models import Document, DocumentChunk, DocumentChunkMetadata
 
 import tiktoken
@@ -180,7 +183,7 @@ def get_document_chunks(
     # Check if there are no chunks
     if not all_chunks:
         return {}
-
+    print("hello")
     # Get all the embeddings for the document chunks in batches, using get_embeddings
     embeddings: List[List[float]] = []
     for i in range(0, len(all_chunks), EMBEDDINGS_BATCH_SIZE):
@@ -188,6 +191,7 @@ def get_document_chunks(
         batch_texts = [
             chunk.text for chunk in all_chunks[i : i + EMBEDDINGS_BATCH_SIZE]
         ]
+
 
         # Get the embeddings for the batch texts
         batch_embeddings = get_embeddings(batch_texts)
