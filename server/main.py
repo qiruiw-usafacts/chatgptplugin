@@ -69,11 +69,12 @@ async def upsert_file(
 async def upsert(
     request: UpsertRequest = Body(...),
 ):
-    curr_datetime = str(datetime.now())
-    dttm = datetime.strptime(curr_datetime, "%Y-%m-%d %H:%M:%S.%f")
-    dttm2 = dttm.strftime("%Y-%m-%dT%H:%M:%S.%fZ")  # Prints "2020-01-03T05:30:44.201000Z"
+    for i in range(len(request.documents)):
+        curr_datetime = str(datetime.now())
+        dttm = datetime.strptime(curr_datetime, "%Y-%m-%d %H:%M:%S.%f")
+        dttm2 = dttm.strftime("%Y-%m-%dT%H:%M:%S.%fZ")  # Prints "2020-01-03T05:30:44.201000Z"
 
-    request.documents[0].metadata.created_at = dttm2
+        request.documents[i].metadata.created_at = dttm2
 
     # ids = await datastore.upsert(request.documents)
     # return UpsertResponse(ids=ids)
@@ -92,18 +93,23 @@ async def upsert(
 async def query_main(
     request: QueryRequest = Body(...),
 ):
-    # results = await datastore.query(
-    #     request.queries,
-    # )
-    # return QueryResponse(results=results)
-    try:
-        results = await datastore.query(
-            request.queries,
-        )
-        return QueryResponse(results=results)
-    except Exception as e:
-        logger.error(e)
-        raise HTTPException(status_code=500, detail="Internal Service Error")
+    for i in range(len(request.queries)):
+
+        request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    results = await datastore.query(
+        request.queries,
+    )
+    return QueryResponse(results=results)
+    # try:
+    #     results = await datastore.query(
+    #         request.queries,
+    #     )
+    #     return QueryResponse(results=results)
+    # except Exception as e:
+    #     logger.error(e)
+    #     raise HTTPException(status_code=500, detail="Internal Service Error")
 
 
 @sub_app.post(

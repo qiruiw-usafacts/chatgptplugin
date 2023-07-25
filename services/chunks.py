@@ -183,7 +183,6 @@ def get_document_chunks(
     # Check if there are no chunks
     if not all_chunks:
         return {}
-    print("hello")
     # Get all the embeddings for the document chunks in batches, using get_embeddings
     embeddings: List[List[float]] = []
     for i in range(0, len(all_chunks), EMBEDDINGS_BATCH_SIZE):

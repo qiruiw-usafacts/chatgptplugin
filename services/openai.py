@@ -28,7 +28,6 @@ def get_embeddings(texts: List[str]) -> List[List[float]]:
     if deployment == None:
         response = openai.Embedding.create(input=texts, model="text-embedding-ada-002")
     else:
-        print("hello before embedding")
         open_ai_endpoint = "https://usafacts-chatgpt-poc.openai.azure.com/"  # https://usafacts-chatgpt-poc.openai.azure.com/
         open_ai_key = "a402a35b28ff44b4825d76e558304583"  # a402a35b28ff44b4825d76e558304583
 

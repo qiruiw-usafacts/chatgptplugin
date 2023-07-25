@@ -139,22 +139,29 @@ class AzureSearchDataStore(DataStore):
             if AZURESEARCH_SEMANTIC_CONFIG != None and not AZURESEARCH_DISABLE_HYBRID:
                 # Ensure we're feeding a good number of candidates to the L2 reranker
                 vector_top_k = max(50, vector_top_k)
+                print('hello if')
                 r = await self.client.search(
                         q, 
                         filter=filter, 
-                        top=query.top_k, 
+                        top=query.top_k,
                         vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING),
                         query_type=QueryType.SEMANTIC,
                         query_language=AZURESEARCH_LANGUAGE,
                         semantic_configuration_name=AZURESEARCH_SEMANTIC_CONFIG)
             else:
+                print('hello else')
                 r = await self.client.search(
                         q, 
-                        filter=filter, 
-                        top=query.top_k, 
-                        vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING))
+                        # filter=filter,
+                        top=query.top_k,
+                        vector=query.embedding,
+                        vector_fields=FIELDS_EMBEDDING
+                        # vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING)
+                )
+                print(r)
             results: List[DocumentChunkWithScore] = []
             async for hit in r:
+                print('hello')
                 f = lambda field: hit.get(field) if field != "-" else None
                 results.append(DocumentChunkWithScore(
                     id=hit[FIELDS_ID],
@@ -169,6 +176,7 @@ class AzureSearchDataStore(DataStore):
                     ),
                     score=hit["@search.score"]
                 ))
+            print(len(results))
                 
             return QueryResult(query=query.query, results=results)
         except Exception as e:
