@@ -48,13 +48,15 @@ async def get_manifest(request):
     return FileResponse(file_path, media_type="text/json", headers=simple_headers)
 
 
-@app.route("/.well-known/logo.png")
+# @app.route("/.well-known/logo.png")
+@app.route("/logo.png")
 async def get_logo(request):
     file_path = "./local_server/logo.png"
     return FileResponse(file_path, media_type="text/json")
 
 
-@app.route("/.well-known/openapi.yaml")
+# @app.route("/.well-known/openapi.yaml")
+@app.route("/openapi.yaml")
 async def get_openapi(request):
     file_path = "./local_server/openapi.yaml"
     return FileResponse(file_path, media_type="text/json")
