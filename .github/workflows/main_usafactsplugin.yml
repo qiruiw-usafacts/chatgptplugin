@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'usafactsplugin'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_57D9129830304CE484EA90036995E624 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8D4ECC5A1A0F44CAB55E7A5CA88842CA }}
