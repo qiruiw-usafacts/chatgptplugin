@@ -17,6 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
+
       - name: Set up Python version
         uses: actions/setup-python@v1
         with:
@@ -28,7 +34,7 @@ jobs:
           source venv/bin/activate
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: poetry config virtualenvs.create false && poetry install --without dev --no-interaction --no-ansi
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       
