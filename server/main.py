@@ -138,7 +138,7 @@ async def query(
         return QueryResponse(results=results)
     except Exception as e:
         logger.error(e)
-        raise HTTPException(status_code=500, detail="Internal Service Error")
+        raise HTTPException(status_code=500, detail=e)
 
 
 @app.delete(
