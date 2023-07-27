@@ -11,7 +11,7 @@
   "api": {
     "type": "openapi",
     "url": "https://usafactsplugin.azurewebsites.net/.well-known/openapi.yaml",
-    "has_user_authentication": false
+    "has_user_authentication": true
   },
   "logo_url": "https://usafactsplugin.azurewebsites.net/.well-known/logo.png",
   "contact_email": "hello@contact.com", 
