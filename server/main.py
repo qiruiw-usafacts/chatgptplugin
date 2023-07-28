@@ -105,10 +105,11 @@ async def query_main(
     request: QueryRequest = Body(...),
 ):
     try:
-        for i in range(len(request.queries)):
-
-            request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-            request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        # for i in range(len(request.queries)):
+        #
+        #     print(type(request))
+        #     request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        #     request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
         results = await datastore.query(
             request.queries,

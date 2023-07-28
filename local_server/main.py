@@ -102,16 +102,16 @@ async def upsert(
         return UpsertResponse(ids=ids)
     except Exception as e:
         logger.error(e)
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=f"str({e})")
 
 
 @app.post("/query", response_model=QueryResponse)
 async def query_main(request: QueryRequest = Body(...)):
     try:
-        for i in range(len(request.queries)):
-
-            request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-            request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        # for i in range(len(request.queries)):
+        #
+        #     request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        #     request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
         results = await datastore.query(
             request.queries,
@@ -124,7 +124,15 @@ async def query_main(request: QueryRequest = Body(...)):
     #     return QueryResponse(results=results)
     except Exception as e:
         logger.error(e)
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=f"str({e})")
+    # for i in range(len(request.queries)):
+    #     request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    #     request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    #
+    # results = await datastore.query(
+    #     request.queries,
+    # )
+    # return QueryResponse(results=results)
 
 
 @app.delete(
@@ -148,7 +156,7 @@ async def delete(
         return DeleteResponse(success=success)
     except Exception as e:
         logger.error(e)
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=f"str({e})")
 
 
 @app.on_event("startup")

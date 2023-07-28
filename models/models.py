@@ -13,7 +13,7 @@ class DocumentMetadata(BaseModel):
     source: Optional[Source] = None
     source_id: Optional[str] = None
     url: Optional[str] = None
-    created_at: Optional[str] = None
+    # created_at: Optional[str] = None
     author: Optional[str] = None
 
 
@@ -47,8 +47,8 @@ class DocumentMetadataFilter(BaseModel):
     source: Optional[Source] = None
     source_id: Optional[str] = None
     author: Optional[str] = None
-    start_date: Optional[str] = None  # any date string format
-    end_date: Optional[str] = None  # any date string format
+    # start_date: Optional[str] = None  # any date string format
+    # end_date: Optional[str] = None  # any date string format
 
 
 class Query(BaseModel):

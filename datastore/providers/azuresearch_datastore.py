@@ -82,7 +82,7 @@ class AzureSearchDataStore(DataStore):
                     FIELDS_SOURCE: chunk.metadata.source,
                     FIELDS_SOURCE_ID: chunk.metadata.source_id,
                     FIELDS_URL: chunk.metadata.url,
-                    FIELDS_CREATED_AT: chunk.metadata.created_at,
+                    # FIELDS_CREATED_AT: chunk.metadata.created_at,
                     FIELDS_AUTHOR: chunk.metadata.author,
                 })
             
@@ -139,7 +139,6 @@ class AzureSearchDataStore(DataStore):
             if AZURESEARCH_SEMANTIC_CONFIG != None and not AZURESEARCH_DISABLE_HYBRID:
                 # Ensure we're feeding a good number of candidates to the L2 reranker
                 vector_top_k = max(50, vector_top_k)
-                print('hello if')
                 r = await self.client.search(
                         q, 
                         filter=filter, 
@@ -204,14 +203,14 @@ class AzureSearchDataStore(DataStore):
             filter_list.append(f"{FIELDS_SOURCE_ID} eq '{escape(filter.source_id)}'")
         if filter.author is not None:
             filter_list.append(f"{FIELDS_AUTHOR} eq '{escape(filter.author)}'")
-        if filter.start_date is not None:
-            if not date_re.match(filter.start_date):
-                raise ValueError(f"start_date must be in OData format, got {filter.start_date}")
-            filter_list.append(f"{FIELDS_CREATED_AT} ge {filter.start_date}")
-        if filter.end_date is not None:
-            if not date_re.match(filter.end_date):
-                raise ValueError(f"end_date must be in OData format, got {filter.end_date}")
-            filter_list.append(f"{FIELDS_CREATED_AT} le {filter.end_date}")
+        # if filter.start_date is not None:
+        #     if not date_re.match(filter.start_date):
+        #         raise ValueError(f"start_date must be in OData format, got {filter.start_date}")
+        #     filter_list.append(f"{FIELDS_CREATED_AT} ge {filter.start_date}")
+        # if filter.end_date is not None:
+        #     if not date_re.match(filter.end_date):
+        #         raise ValueError(f"end_date must be in OData format, got {filter.end_date}")
+        #     filter_list.append(f"{FIELDS_CREATED_AT} le {filter.end_date}")
         return " and ".join(filter_list) if len(filter_list) > 0 else None
     
     def _create_index(self, mgmt_client: SearchIndexClient):
