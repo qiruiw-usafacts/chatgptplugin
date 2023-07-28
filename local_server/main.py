@@ -1,5 +1,6 @@
 # This is a version of the main.py file found in ../../../server/main.py for testing the plugin locally.
 # Use the command `poetry run dev` to run this.
+from datetime import datetime
 from typing import Optional
 import uvicorn
 from fastapi import FastAPI, File, Form, HTTPException, Body, UploadFile
@@ -24,7 +25,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-PORT = 3333
+PORT = 4444
 
 origins = [
     f"http://localhost:{PORT}",
@@ -107,10 +108,20 @@ async def upsert(
 @app.post("/query", response_model=QueryResponse)
 async def query_main(request: QueryRequest = Body(...)):
     try:
+        for i in range(len(request.queries)):
+
+            request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+            request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+
         results = await datastore.query(
             request.queries,
         )
         return QueryResponse(results=results)
+    # try:
+    #     results = await datastore.query(
+    #         request.queries,
+    #     )
+    #     return QueryResponse(results=results)
     except Exception as e:
         logger.error(e)
         raise HTTPException(status_code=500, detail=e)

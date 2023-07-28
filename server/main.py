@@ -6,7 +6,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
 from datetime import datetime
-# from azure.identity.aio import ClientSecretCredential
+from azure.identity.aio import ClientSecretCredential
 
 from models.api import (
     DeleteRequest,
@@ -104,23 +104,24 @@ async def upsert(
 async def query_main(
     request: QueryRequest = Body(...),
 ):
-    for i in range(len(request.queries)):
+    try:
+        for i in range(len(request.queries)):
 
-        request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-        request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+            request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+            request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    results = await datastore.query(
-        request.queries,
-    )
-    return QueryResponse(results=results)
+        results = await datastore.query(
+            request.queries,
+        )
+        return QueryResponse(results=results)
     # try:
     #     results = await datastore.query(
     #         request.queries,
     #     )
     #     return QueryResponse(results=results)
-    # except Exception as e:
-    #     logger.error(e)
-    #     raise HTTPException(status_code=500, detail=e)
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(status_code=500, detail=e)
 
 
 @sub_app.post(
@@ -132,6 +133,11 @@ async def query(
     request: QueryRequest = Body(...),
 ):
     try:
+        for i in range(len(request.queries)):
+
+            request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+            request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+
         results = await datastore.query(
             request.queries,
         )
