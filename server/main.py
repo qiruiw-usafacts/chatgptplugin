@@ -80,12 +80,12 @@ async def upsert_file(
 async def upsert(
     request: UpsertRequest = Body(...),
 ):
-    for i in range(len(request.documents)):
-        curr_datetime = str(datetime.now())
-        dttm = datetime.strptime(curr_datetime, "%Y-%m-%d %H:%M:%S.%f")
-        dttm2 = dttm.strftime("%Y-%m-%dT%H:%M:%S.%fZ")  # Prints "2020-01-03T05:30:44.201000Z"
-
-        request.documents[i].metadata.created_at = dttm2
+    # for i in range(len(request.documents)):
+    #     curr_datetime = str(datetime.now())
+    #     dttm = datetime.strptime(curr_datetime, "%Y-%m-%d %H:%M:%S.%f")
+    #     dttm2 = dttm.strftime("%Y-%m-%dT%H:%M:%S.%fZ")  # Prints "2020-01-03T05:30:44.201000Z"
+    #
+    #     request.documents[i].metadata.created_at = dttm2
 
     # ids = await datastore.upsert(request.documents)
     # return UpsertResponse(ids=ids)
