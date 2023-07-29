@@ -157,10 +157,10 @@ class AzureSearchDataStore(DataStore):
                         vector_fields=FIELDS_EMBEDDING
                         # vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING)
                 )
-                print(type(r))
+                print("after client search")
             results: List[DocumentChunkWithScore] = []
             async for hit in r:
-                print('hello')
+                print('collecting result')
                 f = lambda field: hit.get(field) if field != "-" else None
                 results.append(DocumentChunkWithScore(
                     id=hit[FIELDS_ID],
