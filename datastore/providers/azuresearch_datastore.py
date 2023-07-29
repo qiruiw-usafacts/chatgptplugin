@@ -170,7 +170,7 @@ class AzureSearchDataStore(DataStore):
                         source=f(FIELDS_SOURCE),
                         source_id=f(FIELDS_SOURCE_ID),
                         url=f(FIELDS_URL),
-                        created_at=f(FIELDS_CREATED_AT),
+                        # created_at=f(FIELDS_CREATED_AT),
                         author=f(FIELDS_AUTHOR)
                     ),
                     score=hit["@search.score"]
