@@ -159,6 +159,7 @@ class AzureSearchDataStore(DataStore):
                 )
                 print("after client search")
             results: List[DocumentChunkWithScore] = []
+            print("results created")
             async for hit in r:
                 print('collecting result')
                 f = lambda field: hit.get(field) if field != "-" else None
