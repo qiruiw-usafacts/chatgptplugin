@@ -154,10 +154,11 @@ class AzureSearchDataStore(DataStore):
                         # filter=filter,
                         top=query.top_k,
                         vector=query.embedding,
-                        vector_fields=FIELDS_EMBEDDING
+                        vector_fields=FIELDS_EMBEDDING,
                         # vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING)
                 )
                 print("after client search")
+            print(r)
             results: List[DocumentChunkWithScore] = []
             print("results created")
             async for hit in r:
