@@ -93,8 +93,8 @@ async def upsert(
         ids = await datastore.upsert(request.documents)
         return UpsertResponse(ids=ids)
     except Exception as e:
-        logger.error(e)
-        raise HTTPException(status_code=500, detail=e)
+        logger.error(str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post(
@@ -122,7 +122,7 @@ async def query_main(
     #     return QueryResponse(results=results)
     except Exception as e:
         logger.error(str(e))
-        raise HTTPException(status_code=500, detail=f"str({e})")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @sub_app.post(
