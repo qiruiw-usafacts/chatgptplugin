@@ -104,25 +104,30 @@ async def upsert(
 async def query_main(
     request: QueryRequest = Body(...),
 ):
-    try:
+
+
+    results = await datastore.query(
+        request.queries,
+    )
+    return QueryResponse(results=results)
+    # try:
         # for i in range(len(request.queries)):
         #
         #     print(type(request))
         #     request.queries[i].filter.start_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
         #     request.queries[i].filter.end_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-
-        results = await datastore.query(
-            request.queries,
-        )
-        return QueryResponse(results=results)
+        # results = await datastore.query(
+        #     request.queries,
+        # )
+        # return QueryResponse(results=results)
     # try:
     #     results = await datastore.query(
     #         request.queries,
     #     )
     #     return QueryResponse(results=results)
-    except Exception as e:
-        logger.error(str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+    # except Exception as e:
+    #     logger.error(str(e))
+    #     raise HTTPException(status_code=500, detail=str(e))
 
 
 @sub_app.post(
