@@ -122,7 +122,7 @@ async def query_main(
     #     return QueryResponse(results=results)
     except Exception as e:
         logger.error(e)
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=f"str({e})")
 
 
 @sub_app.post(
@@ -145,7 +145,7 @@ async def query(
         return QueryResponse(results=results)
     except Exception as e:
         logger.error(e)
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=f"str({e})")
 
 
 @app.delete(
