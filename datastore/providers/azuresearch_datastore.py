@@ -159,8 +159,10 @@ class AzureSearchDataStore(DataStore):
                 )
                 print("after client search")
             print(r)
+
             results: List[DocumentChunkWithScore] = []
             print("results created")
+            breakpoint()
             async for hit in r:
                 print('collecting result')
                 f = lambda field: hit.get(field) if field != "-" else None
@@ -181,6 +183,7 @@ class AzureSearchDataStore(DataStore):
                 
             return QueryResult(query=query.query, results=results)
         except Exception as e:
+
             raise Exception(f"Error querying the index: {e}")
 
     @staticmethod    

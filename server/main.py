@@ -106,10 +106,10 @@ async def query_main(
 ):
 
 
-    results = await datastore.query(
-        request.queries,
-    )
-    return QueryResponse(results=results)
+    # results = await datastore.query(
+    #     request.queries,
+    # )
+    # return QueryResponse(results=results)
     # try:
         # for i in range(len(request.queries)):
         #
@@ -120,14 +120,15 @@ async def query_main(
         #     request.queries,
         # )
         # return QueryResponse(results=results)
-    # try:
-    #     results = await datastore.query(
-    #         request.queries,
-    #     )
-    #     return QueryResponse(results=results)
-    # except Exception as e:
-    #     logger.error(str(e))
-    #     raise HTTPException(status_code=500, detail=str(e))
+    try:
+        results = await datastore.query(
+            request.queries,
+        )
+        logger.info(f'query_main:127: results={results}')
+        return QueryResponse(results=results)
+    except Exception as e:
+        logger.error(str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @sub_app.post(
