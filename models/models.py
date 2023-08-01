@@ -24,7 +24,7 @@ class DocumentChunkMetadata(DocumentMetadata):
 class DocumentChunk(BaseModel):
     id: Optional[str] = None
     text: str
-    metadata: DocumentChunkMetadata
+    # metadata: DocumentChunkMetadata
     embedding: Optional[List[float]] = None
 
 

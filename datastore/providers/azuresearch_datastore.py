@@ -169,14 +169,14 @@ class AzureSearchDataStore(DataStore):
                 results.append(DocumentChunk(
                     id=hit[FIELDS_ID],
                     text=hit[FIELDS_TEXT],
-                    metadata=DocumentChunkMetadata(
-                        document_id=f(FIELDS_DOCUMENT_ID),
-                        source=f(FIELDS_SOURCE),
-                        source_id=f(FIELDS_SOURCE_ID),
-                        url=f(FIELDS_URL),
-                        # created_at=f(FIELDS_CREATED_AT),
-                        author=f(FIELDS_AUTHOR)
-                    ),
+                    # metadata=DocumentChunkMetadata(
+                    #     document_id=f(FIELDS_DOCUMENT_ID),
+                    #     source=f(FIELDS_SOURCE),
+                    #     source_id=f(FIELDS_SOURCE_ID),
+                    #     url=f(FIELDS_URL),
+                    #     # created_at=f(FIELDS_CREATED_AT),
+                    #     author=f(FIELDS_AUTHOR)
+                    # ),
                     # score=hit["@search.score"]
                 ))
             print(len(results))
