@@ -16,8 +16,8 @@ WORKDIR /code
 
 COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
+RUN poetry config virtualenvs.create false \
+  && poetry install --without dev --no-interaction --no-ansi
 COPY . /code/
 
 # Heroku uses PORT, Azure App Services uses WEBSITES_PORT, Fly.io uses 8080 by default
