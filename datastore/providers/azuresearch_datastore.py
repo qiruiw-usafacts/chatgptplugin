@@ -182,7 +182,6 @@ class AzureSearchDataStore(DataStore):
                     # score=hit["@search.score"]
                 ))
                 print(results[i])
-
             # print(result.get(FIELDS_TEXT))
             # async for hit in r:
             #     print('collecting result')
@@ -201,7 +200,8 @@ class AzureSearchDataStore(DataStore):
             #         # score=hit["@search.score"]
             #     ))
 
-            print(len(results))
+            print(query.query)
+            print(results)
                 
             return QueryResult(query=query.query, results=results)
         except Exception as e:
