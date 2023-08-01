@@ -16,8 +16,7 @@ WORKDIR /code
 
 COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
 
-RUN poetry config virtualenvs.create false \
-  && poetry install --without dev --no-interaction --no-ansi
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY . /code/
 
