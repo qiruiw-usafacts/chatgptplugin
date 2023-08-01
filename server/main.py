@@ -120,15 +120,20 @@ async def query_main(
         #     request.queries,
         # )
         # return QueryResponse(results=results)
-    try:
-        results = await datastore.query(
-            request.queries,
-        )
-        logger.info(f'query_main:127: results={results}')
-        return QueryResponse(results=results)
-    except Exception as e:
-        logger.error(str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+    results = await datastore.query(
+        request.queries,
+    )
+    # logger.info(f'query_main:127: results={results}')
+    return QueryResponse(results=results)
+    # try:
+    #     results = await datastore.query(
+    #         request.queries,
+    #     )
+    #     # logger.info(f'query_main:127: results={results}')
+    #     return QueryResponse(results=results)
+    # except Exception as e:
+    #     logger.error(str(e))
+    #     raise HTTPException(status_code=500, detail=str(e))
 
 
 @sub_app.post(

@@ -143,83 +143,83 @@ class AzureSearchDataStore(DataStore):
         Takes in a single query and filters and returns a query result with matching document chunks and scores.
         """
         # filter = self._translate_filter(query.filter) if query.filter is not None else None
-        try:
-            vector_top_k = query.top_k if filter is None else query.top_k * 2
-            q = query.query if not AZURESEARCH_DISABLE_HYBRID else None
-            if AZURESEARCH_SEMANTIC_CONFIG != None and not AZURESEARCH_DISABLE_HYBRID:
-                # Ensure we're feeding a good number of candidates to the L2 reranker
-                vector_top_k = max(50, vector_top_k)
-                r = await self.client.search(
-                        q, 
-                        filter=filter, 
-                        top=query.top_k,
-                        vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING),
-                        query_type=QueryType.SEMANTIC,
-                        query_language=AZURESEARCH_LANGUAGE,
-                        semantic_configuration_name=AZURESEARCH_SEMANTIC_CONFIG)
-            else:
-                print('hello else')
-                r = await self.client.search(
-                        search_text = q,
-                        # filter=filter,
-                        top=query.top_k,
-                        vector=query.embedding,
-                        vector_fields=FIELDS_EMBEDDING,
-                        include_total_count = True,
-                        # vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING)
-                )
-                print(await r.get_count())
-                print("after client search")
-            # async for hit in r:
-            #     print(round(hit["@search.score"], 3))
 
-            results: List[DocumentChunk] = []
-            print("results created")
+        vector_top_k = query.top_k if filter is None else query.top_k * 2
+        q = query.query if not AZURESEARCH_DISABLE_HYBRID else None
+        if AZURESEARCH_SEMANTIC_CONFIG != None and not AZURESEARCH_DISABLE_HYBRID:
+            # Ensure we're feeding a good number of candidates to the L2 reranker
+            vector_top_k = max(50, vector_top_k)
+            r = await self.client.search(
+                    q,
+                    filter=filter,
+                    top=query.top_k,
+                    vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING),
+                    query_type=QueryType.SEMANTIC,
+                    query_language=AZURESEARCH_LANGUAGE,
+                    semantic_configuration_name=AZURESEARCH_SEMANTIC_CONFIG)
+        else:
+            print('hello else')
+            r = await self.client.search(
+                    search_text = q,
+                    # filter=filter,
+                    top=query.top_k,
+                    vector=query.embedding,
+                    vector_fields=FIELDS_EMBEDDING,
+                    include_total_count = True,
+                    # vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING)
+            )
+            print(await r.get_count())
+            print("after client search")
+        # async for hit in r:
+        #     print(round(hit["@search.score"], 3))
 
+        results: List[DocumentChunk] = []
+        print("results created")
+
+        # f = lambda field: hit.get(field) if field != "-" else None
+        # for i in range(query.top_k):
+        #     print("result")
+        #     result = await r.__anext__()
+        #     print(result)
+        #     results.append(DocumentChunk(
+        #         id=result[FIELDS_ID],
+        #         text=result[FIELDS_TEXT],
+        #         # metadata=DocumentChunkMetadata(
+        #         #     document_id=f(FIELDS_DOCUMENT_ID),
+        #         #     source=f(FIELDS_SOURCE),
+        #         #     source_id=f(FIELDS_SOURCE_ID),
+        #         #     url=f(FIELDS_URL),
+        #         #     # created_at=f(FIELDS_CREATED_AT),
+        #         #     author=f(FIELDS_AUTHOR)
+        #         # ),
+        #         # score=hit["@search.score"]
+        #     ))
+        #     print(results[i])
+        # print(result.get(FIELDS_TEXT))
+        async for hit in r:
+            print('collecting result')
             # f = lambda field: hit.get(field) if field != "-" else None
-            # for i in range(query.top_k):
-            #     print("result")
-            #     result = await r.__anext__()
-            #     print(result)
-            #     results.append(DocumentChunk(
-            #         id=result[FIELDS_ID],
-            #         text=result[FIELDS_TEXT],
-            #         # metadata=DocumentChunkMetadata(
-            #         #     document_id=f(FIELDS_DOCUMENT_ID),
-            #         #     source=f(FIELDS_SOURCE),
-            #         #     source_id=f(FIELDS_SOURCE_ID),
-            #         #     url=f(FIELDS_URL),
-            #         #     # created_at=f(FIELDS_CREATED_AT),
-            #         #     author=f(FIELDS_AUTHOR)
-            #         # ),
-            #         # score=hit["@search.score"]
-            #     ))
-            #     print(results[i])
-            # print(result.get(FIELDS_TEXT))
-            async for hit in r:
-                print('collecting result')
-                f = lambda field: hit.get(field) if field != "-" else None
-                results.append(DocumentChunk(
-                    id=hit[FIELDS_ID],
-                    text=hit[FIELDS_TEXT],
-                    # metadata=DocumentChunkMetadata(
-                    #     document_id=f(FIELDS_DOCUMENT_ID),
-                    #     source=f(FIELDS_SOURCE),
-                    #     source_id=f(FIELDS_SOURCE_ID),
-                    #     url=f(FIELDS_URL),
-                    #     # created_at=f(FIELDS_CREATED_AT),
-                    #     author=f(FIELDS_AUTHOR)
-                    # ),
-                    # score=hit["@search.score"]
-                ))
+            results.append(DocumentChunk(
+                id=str(hit[FIELDS_ID]),
+                text=str(hit[FIELDS_TEXT]),
+                # metadata=DocumentChunkMetadata(
+                #     document_id=f(FIELDS_DOCUMENT_ID),
+                #     source=f(FIELDS_SOURCE),
+                #     source_id=f(FIELDS_SOURCE_ID),
+                #     url=f(FIELDS_URL),
+                #     # created_at=f(FIELDS_CREATED_AT),
+                #     author=f(FIELDS_AUTHOR)
+                # ),
+                # score=hit["@search.score"]
+            ))
 
-            print(query.query)
-            print(results)
-                
-            return QueryResult(query=query.query, results=results)
-        except Exception as e:
+        print(query.query)
+        print(results)
 
-            raise Exception(f"Error querying the index: {e}")
+        return QueryResult(query=query.query, results=results)
+        # except Exception as e:
+        #
+        #     raise Exception(f"Error querying the index: {e}")
 
     @staticmethod    
     def _translate_filter(filter: DocumentMetadataFilter) -> str:
