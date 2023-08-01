@@ -150,11 +150,12 @@ class AzureSearchDataStore(DataStore):
             else:
                 print('hello else')
                 r = await self.client.search(
-                        q, 
+                        search_text = q,
                         # filter=filter,
                         top=query.top_k,
                         vector=query.embedding,
                         vector_fields=FIELDS_EMBEDDING,
+                        include_total_count = True,
                         # vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING)
                 )
                 print("after client search")
@@ -163,12 +164,13 @@ class AzureSearchDataStore(DataStore):
 
             results: List[DocumentChunk] = []
             print("results created")
-            async for hit in r:
-                print('collecting result')
-                f = lambda field: hit.get(field) if field != "-" else None
+
+            # f = lambda field: hit.get(field) if field != "-" else None
+            for i in range(query.top_k):
+                result = await r.__anext__()
                 results.append(DocumentChunk(
-                    id=hit[FIELDS_ID],
-                    text=hit[FIELDS_TEXT],
+                    id=result[FIELDS_ID],
+                    text=result[FIELDS_TEXT],
                     # metadata=DocumentChunkMetadata(
                     #     document_id=f(FIELDS_DOCUMENT_ID),
                     #     source=f(FIELDS_SOURCE),
@@ -179,6 +181,26 @@ class AzureSearchDataStore(DataStore):
                     # ),
                     # score=hit["@search.score"]
                 ))
+                print(results[i])
+
+            # print(result.get(FIELDS_TEXT))
+            # async for hit in r:
+            #     print('collecting result')
+            #     f = lambda field: hit.get(field) if field != "-" else None
+            #     results.append(DocumentChunk(
+            #         id=hit[FIELDS_ID],
+            #         text=hit[FIELDS_TEXT],
+            #         # metadata=DocumentChunkMetadata(
+            #         #     document_id=f(FIELDS_DOCUMENT_ID),
+            #         #     source=f(FIELDS_SOURCE),
+            #         #     source_id=f(FIELDS_SOURCE_ID),
+            #         #     url=f(FIELDS_URL),
+            #         #     # created_at=f(FIELDS_CREATED_AT),
+            #         #     author=f(FIELDS_AUTHOR)
+            #         # ),
+            #         # score=hit["@search.score"]
+            #     ))
+
             print(len(results))
                 
             return QueryResult(query=query.query, results=results)
