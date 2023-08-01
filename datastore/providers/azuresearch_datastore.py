@@ -168,7 +168,7 @@ class AzureSearchDataStore(DataStore):
                         include_total_count = True,
                         # vector=Vector(value=query.embedding, k=vector_top_k, fields=FIELDS_EMBEDDING)
                 )
-                print(len(r))
+                print(await r.get_count())
                 print("after client search")
             # async for hit in r:
             #     print(round(hit["@search.score"], 3))
