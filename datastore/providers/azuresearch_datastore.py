@@ -132,7 +132,7 @@ class AzureSearchDataStore(DataStore):
         """
         Takes in a single query and filters and returns a query result with matching document chunks and scores.
         """
-        filter = self._translate_filter(query.filter) if query.filter is not None else None
+        # filter = self._translate_filter(query.filter) if query.filter is not None else None
         try:
             vector_top_k = query.top_k if filter is None else query.top_k * 2
             q = query.query if not AZURESEARCH_DISABLE_HYBRID else None
