@@ -1,4 +1,5 @@
 import asyncio
+import json
 import os
 import re
 import time
@@ -38,6 +39,15 @@ FIELDS_AUTHOR = os.environ.get("AZURESEARCH_FIELDS_AUTHOR", "author")
 
 MAX_UPLOAD_BATCH_SIZE = 1000
 MAX_DELETE_BATCH_SIZE = 1000
+
+class QueryResultEncoder(json.JSONEncoder):
+    """
+    Helper to allow for json.dumps() of object with UUID class
+    """
+    def default(self, obj):
+        if isinstance(obj, float):
+            return str(obj)
+        return json.JSONEncoder.default(self, obj)
 
 class AzureSearchDataStore(DataStore):
     def __init__(self):
@@ -167,7 +177,9 @@ class AzureSearchDataStore(DataStore):
 
             # f = lambda field: hit.get(field) if field != "-" else None
             for i in range(query.top_k):
+                print("result")
                 result = await r.__anext__()
+                print(result)
                 results.append(DocumentChunk(
                     id=result[FIELDS_ID],
                     text=result[FIELDS_TEXT],
