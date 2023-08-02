@@ -63,6 +63,9 @@ class AzureSearchDataStore(DataStore):
             credential=AzureSearchDataStore._create_credentials(False),
             user_agent="retrievalplugin"
         )
+        print(f"string: {AZURESEARCH_SERVICE}")
+
+        print(f"This is the number of documents in the datastore:{ self.client.get_document_count()}")
         if AZURESEARCH_INDEX not in [name for name in mgmt_client.list_index_names()]:
             self._create_index(mgmt_client)
         else:
