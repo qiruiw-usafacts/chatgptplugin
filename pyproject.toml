@@ -9,7 +9,7 @@ packages = [{include = "server"}]
 [[tool.poetry.source]]
 name = "azure-sdk-dev"
 url = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/"
-priority = "supplementary"
+priority = "supplemental"
 
 
 [[tool.poetry.source]]
@@ -18,6 +18,7 @@ priority = "primary"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+azure-search-documents = {version = "11.4.0a20230509004", source = "azure-sdk-dev"}
 fastapi = "^0.92.0"
 uvicorn = "^0.20.0"
 openai = "^0.27.5"
