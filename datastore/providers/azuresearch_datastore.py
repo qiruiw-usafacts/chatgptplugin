@@ -176,7 +176,7 @@ class AzureSearchDataStore(DataStore):
         # async for hit in r:
         #     print(round(hit["@search.score"], 3))
 
-        results: List[DocumentChunk] = []
+        results: List[DocumentChunkWithScore] = []
         print("results created")
 
         # f = lambda field: hit.get(field) if field != "-" else None
@@ -199,30 +199,31 @@ class AzureSearchDataStore(DataStore):
         #     ))
         #     print(results[i])
         # print(result.get(FIELDS_TEXT))
-        async for hit in r:
-            print('collecting result')
-            # f = lambda field: hit.get(field) if field != "-" else None
-            results.append(DocumentChunk(
-                id=str(hit[FIELDS_ID]),
-                text=str(hit[FIELDS_TEXT]),
-                # metadata=DocumentChunkMetadata(
-                #     document_id=f(FIELDS_DOCUMENT_ID),
-                #     source=f(FIELDS_SOURCE),
-                #     source_id=f(FIELDS_SOURCE_ID),
-                #     url=f(FIELDS_URL),
-                #     # created_at=f(FIELDS_CREATED_AT),
-                #     author=f(FIELDS_AUTHOR)
-                # ),
-                # score=hit["@search.score"]
-            ))
+        try:
+            async for hit in r:
+                print('collecting result')
+                f = lambda field: hit.get(field) if field != "-" else None
+                results.append(DocumentChunkWithScore(
+                    id=str(hit[FIELDS_ID]),
+                    text=str(hit[FIELDS_TEXT]),
+                    metadata=DocumentChunkMetadata(
+                        document_id=f(FIELDS_DOCUMENT_ID),
+                        source=f(FIELDS_SOURCE),
+                        source_id=f(FIELDS_SOURCE_ID),
+                        url=f(FIELDS_URL),
+                        # created_at=f(FIELDS_CREATED_AT),
+                        author=f(FIELDS_AUTHOR)
+                    ),
+                    score=hit["@search.score"]
+                ))
 
-        print(query.query)
-        print(results)
+            print(query.query)
+            print(results)
 
-        return QueryResult(query=query.query, results=results)
-        # except Exception as e:
-        #
-        #     raise Exception(f"Error querying the index: {e}")
+            return QueryResult(query=query.query, results=results)
+        except Exception as e:
+
+                raise Exception(f"Error querying the index: {e}")
 
     @staticmethod    
     def _translate_filter(filter: DocumentMetadataFilter) -> str:
