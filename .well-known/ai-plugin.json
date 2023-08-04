@@ -3,7 +3,7 @@
   "name_for_model": "retrieval",
   "name_for_human": "USAFacts plugin",
   "description_for_model": "Plugin for searching through the USAFacts' documents (such as files, emails, and more) to find answers to questions and retrieve relevant information. Use it whenever a user asks something that might be found in their personal information. Always include the corresponding USAFacts URL link if possible",
-  "description_for_human": "Search through your documents.",
+  "description_for_human": "Search through USAFacts articles and information.",
   "auth": {
     "type": "user_http",
     "authorization_type": "bearer"
