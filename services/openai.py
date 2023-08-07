@@ -37,7 +37,6 @@ def get_embeddings(texts: List[str]) -> List[List[float]]:
         openai.api_key = open_ai_key
         model_id = "test-model"
         response = openai.Embedding.create(input=texts, deployment_id=deployment)
-        print(response)
 
     # Extract the embedding data from the response
     data = response["data"]  # type: ignore
