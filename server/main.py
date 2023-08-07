@@ -89,6 +89,9 @@ async def upsert(
 
     # ids = await datastore.upsert(request.documents)
     # return UpsertResponse(ids=ids)
+    # ids = await datastore.upsert(request.documents)
+    # return UpsertResponse(ids=ids)
+
     try:
         ids = await datastore.upsert(request.documents)
         return UpsertResponse(ids=ids)
