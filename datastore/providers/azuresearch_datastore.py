@@ -198,7 +198,7 @@ class AzureSearchDataStore(DataStore):
         # print(result.get(FIELDS_TEXT))
         async for hit in r:
             print('collecting result')
-            # f = lambda field: hit.get(field) if field != "-" else None
+            f = lambda field: hit.get(field) if field != "-" else None
             results.append(DocumentChunk(
                 id=str(hit[FIELDS_ID]),
                 text=str(hit[FIELDS_TEXT]),
