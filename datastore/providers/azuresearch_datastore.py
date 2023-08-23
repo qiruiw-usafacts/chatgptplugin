@@ -92,7 +92,7 @@ class AzureSearchDataStore(DataStore):
                     FIELDS_SOURCE: chunk.metadata.source,
                     FIELDS_SOURCE_ID: chunk.metadata.source_id,
                     FIELDS_URL: chunk.metadata.url,
-                    # FIELDS_CREATED_AT: chunk.metadata.created_at,
+                    FIELDS_CREATED_AT: chunk.metadata.created_at,
                     FIELDS_AUTHOR: chunk.metadata.author,
                 })
             
@@ -202,15 +202,15 @@ class AzureSearchDataStore(DataStore):
             results.append(DocumentChunk(
                 id=str(hit[FIELDS_ID]),
                 text=str(hit[FIELDS_TEXT]),
-                # metadata=DocumentChunkMetadata(
-                #     document_id=f(FIELDS_DOCUMENT_ID),
-                #     source=f(FIELDS_SOURCE),
-                #     source_id=f(FIELDS_SOURCE_ID),
-                #     url=f(FIELDS_URL),
-                #     # created_at=f(FIELDS_CREATED_AT),
-                #     author=f(FIELDS_AUTHOR)
-                # ),
-                # score=hit["@search.score"]
+                metadata=DocumentChunkMetadata(
+                    document_id=f(FIELDS_DOCUMENT_ID),
+                    source=f(FIELDS_SOURCE),
+                    source_id=f(FIELDS_SOURCE_ID),
+                    url=f(FIELDS_URL),
+                    created_at=f(FIELDS_CREATED_AT),
+                    author=f(FIELDS_AUTHOR)
+                ),
+                score=hit["@search.score"]
             ))
 
         print(query.query)

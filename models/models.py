@@ -13,7 +13,7 @@ class DocumentMetadata(BaseModel):
     source: Optional[Source] = None
     source_id: Optional[str] = None
     url: Optional[str] = None
-    # created_at: Optional[str] = None
+    created_at: Optional[str] = None
     author: Optional[str] = None
 
 
@@ -24,7 +24,7 @@ class DocumentChunkMetadata(DocumentMetadata):
 class DocumentChunk(BaseModel):
     id: Optional[str] = None
     text: str
-    # metadata: DocumentChunkMetadata
+    metadata: DocumentChunkMetadata
     embedding: Optional[List[float]] = None
 
 
