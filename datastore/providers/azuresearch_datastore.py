@@ -173,32 +173,11 @@ class AzureSearchDataStore(DataStore):
             )
             print(await r.get_count())
             print("after client search")
-        # async for hit in r:
-        #     print(round(hit["@search.score"], 3))
+
 
         results: List[DocumentChunkWithScore] = []
         print("results created")
 
-        # f = lambda field: hit.get(field) if field != "-" else None
-        # for i in range(query.top_k):
-        #     print("result")
-        #     result = await r.__anext__()
-        #     print(result)
-        #     results.append(DocumentChunk(
-        #         id=result[FIELDS_ID],
-        #         text=result[FIELDS_TEXT],
-        #         # metadata=DocumentChunkMetadata(
-        #         #     document_id=f(FIELDS_DOCUMENT_ID),
-        #         #     source=f(FIELDS_SOURCE),
-        #         #     source_id=f(FIELDS_SOURCE_ID),
-        #         #     url=f(FIELDS_URL),
-        #         #     # created_at=f(FIELDS_CREATED_AT),
-        #         #     author=f(FIELDS_AUTHOR)
-        #         # ),
-        #         # score=hit["@search.score"]
-        #     ))
-        #     print(results[i])
-        # print(result.get(FIELDS_TEXT))
         async for hit in r:
             print('collecting result')
             f = lambda field: hit.get(field) if field != "-" else None
@@ -210,7 +189,7 @@ class AzureSearchDataStore(DataStore):
                     source=f(FIELDS_SOURCE),
                     source_id=f(FIELDS_SOURCE_ID),
                     url=f(FIELDS_URL),
-                    created_at=f(FIELDS_CREATED_AT),
+                    # created_at=f(FIELDS_CREATED_AT),
                     author=f(FIELDS_AUTHOR)
                 ),
                 score=hit["@search.score"]
