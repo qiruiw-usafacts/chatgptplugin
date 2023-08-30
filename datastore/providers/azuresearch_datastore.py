@@ -63,6 +63,9 @@ class AzureSearchDataStore(DataStore):
             credential=AzureSearchDataStore._create_credentials(False),
             user_agent="retrievalplugin"
         )
+        # print(f"string: {AZURESEARCH_SERVICE}")
+
+        # print(f"This is the number of documents in the datastore:{ self.client.get_document_count()}")
         if AZURESEARCH_INDEX not in [name for name in mgmt_client.list_index_names()]:
             self._create_index(mgmt_client)
         else:
@@ -173,7 +176,7 @@ class AzureSearchDataStore(DataStore):
         # async for hit in r:
         #     print(round(hit["@search.score"], 3))
 
-        results: List[DocumentChunk] = []
+        results: List[DocumentChunkWithScore] = []
         print("results created")
 
         # f = lambda field: hit.get(field) if field != "-" else None
@@ -213,13 +216,13 @@ class AzureSearchDataStore(DataStore):
                 score=hit["@search.score"]
             ))
 
-        print(query.query)
-        print(results)
+            print(query.query)
+            print(results)
 
-        return QueryResult(query=query.query, results=results)
-        # except Exception as e:
-        #
-        #     raise Exception(f"Error querying the index: {e}")
+            return QueryResult(query=query.query, results=results)
+        except Exception as e:
+
+                raise Exception(f"Error querying the index: {e}")
 
     @staticmethod    
     def _translate_filter(filter: DocumentMetadataFilter) -> str:
