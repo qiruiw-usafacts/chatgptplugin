@@ -220,9 +220,9 @@ class AzureSearchDataStore(DataStore):
             print(results)
 
             return QueryResult(query=query.query, results=results)
-        except Exception as e:
-
-                raise Exception(f"Error querying the index: {e}")
+        # except Exception as e:
+        #
+        #         raise Exception(f"Error querying the index: {e}")
 
     @staticmethod    
     def _translate_filter(filter: DocumentMetadataFilter) -> str:
